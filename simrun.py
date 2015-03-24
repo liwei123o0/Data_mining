@@ -24,6 +24,7 @@ def topsim(perfs,person,n=5,sim=prxsim.sim_pearson):
     #反转
     scores.reverse()
     return scores[0:n]
+#推荐未看过的电影并给出模拟评分
 def getsim(prefs,person,sim=ojsim.sim_distance):
     totals={}
     simsum={}
@@ -57,10 +58,22 @@ def getsim(prefs,person,sim=ojsim.sim_distance):
         rankings.sort()
         rankings.reverse()
         return rankings
+#对调人员与物品推荐相关物品
+def wptj(prefs):
+    result={}
+    for person in prefs:
+        for item in prefs[person]:
+            result.setdefault(item,{})
+            #物品和人员对调
+            print result
+            result[item][person]=person[person][item]
+    return result
+
 if __name__=='__main__':
     #第一种方法
     # simtop('刘浩',ojsim.sim_distance)
     #第二张方法
     # for i in topsim(data.dicttostring,'刘浩',n=3):
     #     print i
-    print getsim(data.dicttostring,'亚子')
+    #print getsim(data.dicttostring,'亚子')
+    print wptj(data.dicttostring)
