@@ -47,11 +47,11 @@ def getsim(prefs,person,sim=ojsim.sim_distance):
                 #相似度之和
                 simsum.setdefault(item,0)
                 simsum[item]+=simsf
-        #建立一个归一化列表
-        for item,total in totals.items():
-            print item,total
-            print simsum[item]
-            print total/simsum[item]
+        #建立一个归一化列表两种方式
+        # for item,total in totals.items():
+            # print item,total
+            # print simsum[item]
+            # print total/simsum[item]
         rankings = [(total/simsum[item],item) for item,total in totals.items()]
         #返回经过排序的列表
         # print rankings
@@ -64,16 +64,19 @@ def wptj(prefs):
     for person in prefs:
         for item in prefs[person]:
             result.setdefault(item,{})
-            #物品和人员对调
-            print result
-            result[item][person]=person[person][item]
+            result[item][person]=prefs[person][item]
     return result
-
 if __name__=='__main__':
     #第一种方法
     # simtop('刘浩',ojsim.sim_distance)
     #第二张方法
     # for i in topsim(data.dicttostring,'刘浩',n=3):
     #     print i
+    #第三个方法为某人推荐相关电影以及猜测评分
     #print getsim(data.dicttostring,'亚子')
-    print wptj(data.dicttostring)
+    #第四个方法为某人推荐物品与某一电影最相近的影片
+    #保存对调后的字典
+    dict1= wptj(data.dicttostring)
+    # print topsim(dict1,'Superman Returns',3)
+    #第四个方法的变化应用和谁一起看推荐
+    print getsim(dict1,'Just My Luck')
