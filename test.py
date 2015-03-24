@@ -2,16 +2,6 @@
 #! /usr/bin/env python
 import data
 from pydelicious import get_popular,get_userposts,get_urlposts
-a= get_popular(tag='programming')
-for i in a:
-    print get_urlposts(i)
-def initializeUserDict(tag,count=5):
-    user_dict={}
-    #获取前count个最受欢迎的连接张贴记录
-    for p1 in get_popular(tag=tag)[0:count]:
-        for p2 in get_urlposts(p1['href']):
-            user=p2['user']
-            user_dict[user]={}
-    print user_dict
-    return user_dict
+a = "\xe4\xb8\xa4\xe4\xba\xba\xe6\xb2\xa1\xe6\x9c\x89\xe5\x85\xb1\xe5\x90\x8c\xe7\x88\xb1\xe5\xa5\xbd"
+print a
 # initializeUserDict(tag='programming')

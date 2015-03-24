@@ -5,7 +5,32 @@ import data
 import ojsim
 #皮尔逊算法
 import prxsim
-#实现将相似度按最大值排序
+'''
+函数方法说明：
+1.simtopsimtop(person2,sim)
+simtopsimtop指定某人与已知数据里其他人的相似度值
+--preson2（必填） 某人姓名
+--sim    （必填） 算法选择。 如：皮尔逊算法，欧几里德算法。
+2.topsim(perfs,person,n=5,sim=prxsim.sim_pearson)
+topsim指定某人与已知数据里其他人的相似度值前5名
+--preson2（必填） 某人姓名
+--sim    （必填） 算法选择。 如：皮尔逊算法，欧几里德算法。
+--n       (可选)  默认前5名
+3.getsim(prefs,person,sim=ojsim.sim_distance)
+推荐未看过的电影并给出其他人对他的相似度评分
+--prefs  （必填） 字典数据
+--person （必填） 字典里包含的人名
+--sim    （必填） 算法选择。 如：皮尔逊算法，欧几里德算法。
+4.wptj(prefs)
+对调人员与物品推荐相关物品（字典键值对调换）
+--prefs  （必填） 字典数据
+5.jywpbj(prefs,n=10)
+构造物品比较数据集
+--prefs  （必填） 字典数据
+--n       (可选)  默认显示10个
+'''
+
+#1.实现将相似度按最大值排序
 def simtop(person2,sim):
     scores=[]
     for person1 in data.dicttostring:
@@ -15,7 +40,7 @@ def simtop(person2,sim):
     scores.sort()
     scores.reverse()
     print scores
-#自定义使用相关算法与某人进行相似度计算，将排名前几位的打印出来
+#2.自定义使用相关算法与某人进行相似度计算，将排名前几位的打印出来
 def topsim(perfs,person,n=5,sim=prxsim.sim_pearson):
     scores =[[sim(perfs,person,other),other]
                     for other in perfs if other!=person]
@@ -24,7 +49,7 @@ def topsim(perfs,person,n=5,sim=prxsim.sim_pearson):
     #反转
     scores.reverse()
     return scores[0:n]
-#推荐未看过的电影并给出模拟评分
+#3.推荐未看过的电影并给出模拟评分
 def getsim(prefs,person,sim=ojsim.sim_distance):
     totals={}
     simsum={}
@@ -58,7 +83,7 @@ def getsim(prefs,person,sim=ojsim.sim_distance):
         rankings.sort()
         rankings.reverse()
         return rankings
-#对调人员与物品推荐相关物品
+#4.对调人员与物品推荐相关物品
 def wptj(prefs):
     result={}
     for person in prefs:
@@ -66,6 +91,23 @@ def wptj(prefs):
             result.setdefault(item,{})
             result[item][person]=prefs[person][item]
     return result
+#5.构造物品比较数据集
+def jywpbj(prefs,n=10):
+    #字典里存取以给出与这些物品最为相近的所有其他物品
+    result={}
+    #以物品为中心，对偏好矩阵事实倒置
+    itemdd =wptj(prefs)
+    # print itemdd
+    c=0
+    for item in itemdd:
+        c+=1
+        if c%100==0: print "数据构造进度：\n%d /%d"%(c,len(itemdd))
+        #寻找最为相近的物品
+        scores = topsim(itemdd,item,n=n,sim=prxsim.sim_pearson)
+        # print scores
+        result[item]=scores
+    return result
+
 if __name__=='__main__':
     #第一种方法
     # simtop('刘浩',ojsim.sim_distance)
@@ -79,4 +121,8 @@ if __name__=='__main__':
     dict1= wptj(data.dicttostring)
     # print topsim(dict1,'Superman Returns',3)
     #第四个方法的变化应用和谁一起看推荐
-    print getsim(dict1,'Just My Luck')
+    # print getsim(dict1,'Just My Luck')
+    #第五个方法构造物品比较数据集
+    print jywpbj(data.dicttostring)
+    # for name in jywpbj(data.dicttostring)['Superman Returns']:
+    #     print name
