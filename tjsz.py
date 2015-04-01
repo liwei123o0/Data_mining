@@ -33,7 +33,7 @@ def getwupintj(prefs,itemMatch,user):
             if item2 in userRatings:continue
             #评价值与相似度加权之和
             scores.setdefault(item2,0)
-            scores[item2]+=sim*rating
+            scores[item2]+=sim * rating
         #将每个合计值除以加权和，求出平均值
         rankings = [(scores/totalSim[item],item) for item,scores in scores.items()]
         #按最高到最低排序，返回评分结果
@@ -45,8 +45,8 @@ prefs=loadData()
 #1.基于用户的推荐方式
 # print simrun.getsim(prefs,'2')[0:3]
 #2.基于物品的推荐方式
-itemwupin = simrun.jywpbj(prefs,n=50)
-print getwupintj(prefs,itemwupin,'87')
+# itemwupin = simrun.jywpbj(prefs,n=50)
+# print getwupintj(prefs,itemwupin,'87')
 #3.测试getwupintj方法
-# itemwupin = simrun.jywpbj(data.dicttostring,n=50)
-# print getwupintj(data.dicttostring,itemwupin,'李伟')
+itemwupin = simrun.jywpbj(data.dicttostring,n=10)
+print getwupintj(data.dicttostring,itemwupin,'李伟')
