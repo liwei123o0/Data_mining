@@ -16,5 +16,15 @@ def getwordcounts(url):
 def getwords(html):
     txt = re.compile(r'<[^>]+>').sub("",html)
     words = re.compile(r"[^A-Z^a-z]+").split(txt)
-
     return [word.lower() for word in words if word!=""]
+
+apcount ={}
+wordcounts={}
+feedlist =[line for line in file("feedlist.txt")]
+for feedurl in feedlist:
+    title,wc=getwordcounts(feedurl)
+    wordcounts[title]=wc
+    for word,count in wc.items():
+        apcount.setdefault(word,0)
+        if count >1:
+            apcount[word]+=1
