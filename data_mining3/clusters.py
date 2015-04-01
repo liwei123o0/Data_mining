@@ -12,3 +12,9 @@ def readfile(filename):
         rownames.append(p[0])
         data.append(float(x) for x in p[1:])
     return rownames,colnames,data
+class bicluster:
+    def __init__(self,vec,left=None,right=None,distance=0.0,id=None):
+        self.left=left
+        self.right=right
+        self.vec=vec
+        self.distance=distance
